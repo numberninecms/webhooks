@@ -2,7 +2,13 @@
     "name": "numberninecms/webhooks",
     "type": "project",
     "description": "Deployment TravisCI webhook for NumberNine CMS demo application",
-    "license": "proprietary",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "William Arin",
+            "email": "williamarin.dev@gmail.com"
+        }
+    ],
     "require": {
         "php": "^7.4",
         "ext-ctype": "*",
