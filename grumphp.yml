@@ -1,0 +1,55 @@
+grumphp:
+    tasks:
+        phpstan: ~
+        phpunit: ~
+        phpcs:
+            standard: PSR12
+        composer:
+            no_check_lock: true
+            no_local_repository: true
+        composer_normalize:
+            indent_size: 4
+            indent_style: space
+        yamllint:
+            parse_custom_tags: true
+        phplint: ~
+        phpparser:
+            visitors:
+                no_exit_statements: ~
+                forbidden_function_calls:
+                    blacklist:
+                        - die
+                        - dd
+                        - dump
+                        - var_dump
+                        - print_r
+        git_commit_message:
+            allow_empty_message: false
+            enforce_capitalized_subject: false
+            max_subject_width: 120
+            type_scope_conventions:
+                types:
+                    - build
+                    - ci
+                    - chore
+                    - docs
+                    - feat
+                    - fix
+                    - perf
+                    - refactor
+                    - style
+                    - test
+        git_blacklist:
+            keywords:
+                - 'die('
+                - ' dd('
+                - 'dump('
+                - 'var_dump('
+                - 'print_r('
+                - 'exit;'
+            whitelist_patterns: []
+            triggered_by: ['php']
+            regexp_type: G
+    ascii:
+        failed: ~
+        succeeded: ~
