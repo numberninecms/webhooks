@@ -22,6 +22,7 @@ jobs:
 
         -
             stage: prod
+            if: branch = master
             env:
                 - COMPOSER_VERSION=2 APP_ENV=prod
             install:
@@ -33,8 +34,13 @@ jobs:
                 - git config --local user.email "$GIT_EMAIL"
                 - export TRAVIS_TAG=${TRAVIS_TAG:-$(date +'%Y%m%d%H%M%S')-$(git log --format=%h -1)}
                 - git tag $TRAVIS_TAG
+                - rm composer.lock grumphp.yml phpcs.xml.dist phpstan.neon phpunit.xml.dist symfony.lock
+                - rm -rf ./var
+                - mkdir -p ./var/cache ./var/log
+                - zip -rq9 release-$TRAVIS_TAG.zip ./*
             deploy:
                 provider: releases
                 edge: true
+                file: release-$TRAVIS_TAG.zip
                 token: $GITHUB_TOKEN
                 cleanup: false
