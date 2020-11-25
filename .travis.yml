@@ -64,3 +64,4 @@ jobs:
                 file: webhooks-${RELEASE_NAME}-RC${TRAVIS_BUILD_ID}.zip
                 token: $GITHUB_TOKEN
                 cleanup: false
+                draft: true
