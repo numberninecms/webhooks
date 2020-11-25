@@ -65,3 +65,6 @@ jobs:
                 token: $GITHUB_TOKEN
                 cleanup: false
                 draft: true
+                on:
+                    all_branches: true
+
