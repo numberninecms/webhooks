@@ -22,20 +22,21 @@ use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/travis/deploy-numbernine", name="travis_deploy_numbernine", methods={"POST"})
+ * @Route("/travis/{deployType<deploy|staging>}", name="travis_deploy", methods={"POST"})
  */
-class TravisDeployNumberNineAction extends AbstractController
+class TravisDeployAction extends AbstractController
 {
-    public function __invoke(Request $request, KernelInterface $kernel): JsonResponse
+    public function __invoke(Request $request, KernelInterface $kernel, string $deployType): JsonResponse
     {
         $application = new Application($kernel);
         $application->setAutoExit(false);
 
         $input = new ArrayInput(
             [
-                'command' => 'app:numbernine:update',
-                'docker-image' => $this->getParameter('travis_deploy_docker_image'),
-                'destination-volume' => $this->getParameter('travis_deploy_destination_volume'),
+                'command' => "app:$deployType",
+                'docker-image' => $this->getParameter("${deployType}_docker_image"),
+                'destination-volume' => $this->getParameter("${deployType}_destination_volume"),
+                'app-path' => $this->getParameter("${deployType}_app_path"),
             ]
         );
         $output = new BufferedOutput();
