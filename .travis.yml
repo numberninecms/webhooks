@@ -57,11 +57,11 @@ jobs:
                 - rm -rf ./var
                 - mkdir -p ./var/cache ./var/log
                 - export RELEASE_NAME=`echo "$TRAVIS_BRANCH" | sed 's@release/\(.*\)@\1@'`
-                - zip -rq9 webhooks-${RELEASE_NAME}-RC${TRAVIS_BUILD_ID}.zip ./*
+                - zip -rq9 webhooks-${RELEASE_NAME}-RC${TRAVIS_BUILD_NUMBER}.zip ./*
             deploy:
                 provider: releases
                 edge: true
-                file: webhooks-${RELEASE_NAME}-RC${TRAVIS_BUILD_ID}.zip
+                file: webhooks-${RELEASE_NAME}-RC${TRAVIS_BUILD_NUMBER}.zip
                 token: $GITHUB_TOKEN
                 cleanup: false
                 draft: true
