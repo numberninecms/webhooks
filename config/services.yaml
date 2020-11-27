@@ -4,8 +4,12 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
-    travis_deploy_docker_image: '%env(DOCKER_IMAGE)%'
-    travis_deploy_destination_volume: '%env(DOCKER_DESTINATION_VOLUME)%'
+    deploy_docker_image: '%env(DEPLOY_DOCKER_IMAGE)%'
+    deploy_destination_volume: '%env(DEPLOY_DOCKER_DESTINATION_VOLUME)%'
+    deploy_app_path: '%env(DEPLOY_APP_PATH)%'
+    staging_docker_image: '%env(STAGING_DOCKER_IMAGE)%'
+    staging_destination_volume: '%env(STAGING_DOCKER_DESTINATION_VOLUME)%'
+    staging_app_path: '%env(STAGING_APP_PATH)%'
 
 services:
     # default configuration for services in *this* file

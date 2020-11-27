@@ -12,45 +12,23 @@
 namespace App\Controller;
 
 use RuntimeException;
-use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Console\Input\ArrayInput;
-use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/travis/deploy-numbernine", name="travis_deploy_numbernine", methods={"POST"})
+ * @Route("/travis/{deployType<deploy|staging>}", name="travis_deploy", methods={"POST"})
  */
-class TravisDeployNumberNineAction extends AbstractController
+class TravisDeployAction extends AbstractController
 {
-    public function __invoke(Request $request, KernelInterface $kernel): JsonResponse
+    public function __invoke(Request $request, KernelInterface $kernel, string $deployType): JsonResponse
     {
-        $application = new Application($kernel);
-        $application->setAutoExit(false);
+        $this->validateRequest($request);
 
-        $input = new ArrayInput(
-            [
-                'command' => 'app:numbernine:update',
-                'docker-image' => $this->getParameter('travis_deploy_docker_image'),
-                'destination-volume' => $this->getParameter('travis_deploy_destination_volume'),
-            ]
-        );
-        $output = new BufferedOutput();
-        $returnCode = $application->run($input, $output);
-
-        if ($returnCode !== 0) {
-            return $this->json(
-                [
-                    'message' => 'An error occured during deployment process',
-                    'error' => $output->fetch(),
-                    'errorCode' => $returnCode,
-                ],
-                500
-            );
-        }
+        chdir($this->getParameter("${deployType}_app_path"));
+        exec('make deploy > /dev/null 2>&1 &');
 
         return $this->json(['message' => 'Deployment successful']);
     }
